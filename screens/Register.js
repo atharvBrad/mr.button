@@ -44,7 +44,7 @@ export default function Register({ navigation }) {
       password,
     };
 
-    const response = await fetch("http://localhost:5000/register", {
+    const response = await fetch("http://192.168.1.39:5000/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export default function Register({ navigation }) {
       body: JSON.stringify(userData),
     });
 
-    navigation.navigate("HomeScreen");
+    navigation.navigate("DrawerStack");
 
     console.log(userData);
     // sendData();

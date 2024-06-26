@@ -46,7 +46,9 @@ export default function Login({ navigation }) {
 
         {!showSignInOptions ? (
           <View style={styles.buttonWrapper}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("DrawerStack")}
+            >
               <View style={styles.guestbutton}>
                 <Text style={[styles.buttonText, styles.fontCenturyGothic]}>
                   CONTINUE AS GUEST

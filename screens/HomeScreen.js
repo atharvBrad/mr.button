@@ -13,50 +13,50 @@ import Swiper from "react-native-swiper";
 import { useNavigation } from "@react-navigation/native";
 import CardSlider from "./CardSlider";
 
-const categories = [
-  {
-    id: "1",
-    name: "Shirt",
-    image: require("../assets/categories/cat-1.png"),
-    screen: "ShirtScreen",
-  },
-  {
-    id: "2",
-    name: "Blazer",
-    image: require("../assets/categories/cat-2.png"),
-    screen: "Login",
-  },
-  {
-    id: "3",
-    name: "Trouser",
-    image: require("../assets/categories/cat-3.png"),
-    screen: "TrouserScreen",
-  },
-  {
-    id: "4",
-    name: "Nehru Jackets",
-    image: require("../assets/categories/cat-4.png"),
-    screen: "NehruJacketsScreen",
-  },
-  {
-    id: "5",
-    name: "Tunic",
-    image: require("../assets/categories/cat-5.png"),
-    screen: "TunicScreen",
-  },
-  {
-    id: "6",
-    name: "Shop All",
-    image: require("../assets/Mr Button Logo blue.png"),
-    screen: "ShopAllScreen",
-  },
-];
+// const categories = [
+//   {
+//     id: "1",
+//     name: "Shirt",
+//     image: require("../assets/categories/cat-1.png"),
+//     screen: "ShirtScreen",
+//   },
+//   {
+//     id: "2",
+//     name: "Blazer",
+//     image: require("../assets/categories/cat-2.png"),
+//     screen: "Login",
+//   },
+//   {
+//     id: "3",
+//     name: "Trouser",
+//     image: require("../assets/categories/cat-3.png"),
+//     screen: "TrouserScreen",
+//   },
+//   {
+//     id: "4",
+//     name: "Nehru Jackets",
+//     image: require("../assets/categories/cat-4.png"),
+//     screen: "NehruJacketsScreen",
+//   },
+//   {
+//     id: "5",
+//     name: "Tunic",
+//     image: require("../assets/categories/cat-5.png"),
+//     screen: "TunicScreen",
+//   },
+//   {
+//     id: "6",
+//     name: "Shop All",
+//     image: require("../assets/Mr Button Logo blue.png"),
+//     screen: "ShopAllScreen",
+//   },
+// ];
 
-const sliderImages = [
-  require("../assets/image2.png"),
-  require("../assets/image3.png"),
-  require("../assets/image4.png"),
-];
+// const sliderImages = [
+//   require("../assets/image2.png"),
+//   require("../assets/image3.png"),
+//   require("../assets/image4.png"),
+// ];
 
 export default function HomeScreen() {
   const navigation = useNavigation(); // Hook to get navigation object
@@ -75,7 +75,7 @@ export default function HomeScreen() {
         style={styles.logo}
       /> */}
       {/* Render slides as touchable */}
-      <View style={styles.categoriesContainer}>
+      {/* <View style={styles.categoriesContainer}>
         <FlatList
           data={categories}
           horizontal
@@ -93,9 +93,9 @@ export default function HomeScreen() {
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.categoriesList}
         />
-      </View>
+      </View> */}
 
-      <View style={styles.carouselContainer}>
+      {/* <View style={styles.carouselContainer}>
         <Swiper
           loop
           autoplay
@@ -112,7 +112,7 @@ export default function HomeScreen() {
             </TouchableOpacity>
           ))}
         </Swiper>
-      </View>
+      </View> */}
 
       {/* Slideable Cards */}
       <CardSlider navigation={navigation} />

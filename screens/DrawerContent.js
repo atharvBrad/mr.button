@@ -55,43 +55,7 @@ const DrawerItems = (navigation) => {
 
 function DrawerContent(props) {
   const { navigation } = props;
-  // return (
-  //   <View style={{ flex: 1 }}>
-  //     <DrawerContentScrollView {...props}>
-  //       <View style={styles.drawerContent}>
-  //         <View style={styles.header}>
-  //           <TouchableOpacity onPress={() => navigation.closeDrawer()}>
-  //             <Icon name="close" size={20} color="#fff" />
-  //           </TouchableOpacity>
-  //         </View>
-  //         <TouchableOpacity activeOpacity={0.8}>
-  //           <View style={styles.userInfoSection}>
-  //             <View style={{ flexDirection: "row", marginTop: 15 }}>
-  //               <View style={{ marginLeft: 10, flexDirection: "column" }}>
-  //                 <Title style={styles.title}>ATHARV</Title>
-  //                 <Text style={styles.caption} numberOfLines={1}>
-  //                   atharvpatil322@gmail.com
-  //                 </Text>
-  //               </View>
-  //             </View>
-  //           </View>
-  //         </TouchableOpacity>
-  //         <View style={styles.drawerSection}>
-  //           <DrawerItems />
-  //         </View>
-  //       </View>
-  //     </DrawerContentScrollView>
-  //     <View style={styles.bottomDrawerSection}>
-  //       <DrawerItem
-  //         icon={({ color, size }) => (
-  //           <Icon name="exit-to-app" color={"#fff"} size={size} />
-  //         )}
-  //         label="Sign Out"
-  //         labelStyle={{ color: "#fff" }}
-  //       />
-  //     </View>
-  //   </View>
-  // );
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView {...props}>
@@ -136,6 +100,7 @@ const styles = StyleSheet.create({
   drawerContent: {
     flex: 1,
     backgroundColor: "#252355",
+    // backgroundColor: "transparent",
   },
   header: {
     flexDirection: "row",

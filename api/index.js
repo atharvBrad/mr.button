@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const crypto = require("crypto");
-const bcrypt = require("bcrypt");
+const CryptoJS = require("crypto-js");
 
 const jwt = require("jsonwebtoken");
 
@@ -17,9 +17,15 @@ const io = require("socket.io")(http);
 
 app.use(cors());
 
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.json());
+// app.use(express.json());
+// app.use(express.urlencoded());
 
 mongoose
   .connect(
@@ -29,68 +35,24 @@ mongoose
     console.log("Connected To MongoDB");
   })
   .catch((error) => {
-    console.log("Error connecting to MongoDB");
+    console.log("Error connecting to MongoDB", error);
   });
 
-// User registration endpoint
-// app.post("/register", async (req, res) => {
-//   try {
-//     const { firstName, lastName, emailId, password } = req.body;
-//     const newUser = new User({ firstName, lastName, emailId, password });
+const productRouter = require("./routes/products");
+const authRouter = require("./routes/auth");
+// const orderRouter = require("./routes/order");
+const cartRouter = require("./routes/cart");
+const userRouter = require("./routes/user");
 
-//     await newUser.save();
+app.use("/api/products", productRouter);
+app.use("/api/", authRouter);
+// app.use("/api/orders", orderRouter);
+app.use("/api/users", userRouter);
+app.use("/api/cart", cartRouter);
 
-//     res.send("data entered");
-//   } catch (error) {
-//     console.log("Error Creating User", error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-//   // // Basic validation
-//   // if (!firstName || !lastName || !emailId || !password) {
-//   //   return res.status(400).json({ message: "All fields are required" });
-//   // }
-
-//   // // Check if user already exists
-//   // const existingUser = await User.findOne({ emailId });
-//   // if (existingUser) {
-//   //   return res.status(400).json({ message: "Email already in use" });
-//   // }
-
-//   // Hash the password
-//   // const hashedPassword = await bcrypt.hash(password, 10);
-
-//   // Create new user
-//   // const newUser = new User({
-//   //   firstName,
-//   //   lastName,
-//   //   email,
-//   //   password: hashedPassword,
-//   // });
-// });
-
-app.post("/register", async (req, res) => {
-  try {
-    const { firstName, lastName, emailId, password } = req.body;
-
-    if (!firstName || !lastName || !emailId || !password) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-
-    const existingUser = await User.findOne({ emailId });
-    if (existingUser) {
-      return res.status(400).json({ error: "Email already in use" });
-    }
-
-    // Create new user
-    const newUser = new User({ firstName, lastName, emailId, password });
-
-    await newUser.save();
-
-    res.status(201).json({ message: "User created successfully" });
-  } catch (error) {
-    console.log("Error Creating User", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+// Health check route
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ message: "Server is running" });
 });
 
 app.listen(port, () => {

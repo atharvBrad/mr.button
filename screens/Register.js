@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Alert,
 } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Error from "react-native-vector-icons/MaterialIcons";
@@ -22,41 +23,52 @@ export default function Register({ navigation }) {
   const [passwordVerify, setPasswordVerify] = useState(false);
 
   const handleRegister = async () => {
-    if (
-      !firstName ||
-      !lastName ||
-      !emailId ||
-      !password ||
-      !confirmPassword ||
-      !firstVerify ||
-      !lastVerify ||
-      !emailVerify ||
-      !passwordVerify
-    ) {
-      alert("Please fill all fields correctly.");
-      return;
+    try {
+      if (
+        !firstName ||
+        !lastName ||
+        !emailId ||
+        !password ||
+        !confirmPassword
+      ) {
+        alert("Please fill all fields correctly.");
+        return;
+      }
+
+      if (!firstVerify || !lastVerify || !emailVerify || !passwordVerify) {
+        alert("Please ensure all fields are correctly formatted.");
+        return;
+      }
+
+      const userData = {
+        firstName,
+        lastName,
+        emailId,
+        password,
+      };
+
+      const response = await fetch("http://192.168.1.42:5000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Registration failed");
+      }
+
+      // Registration successful, navigate to main app screen or provide feedback
+      // navigation.navigate("DrawerStack");
+      navigation.navigate("SignIn");
+
+      Alert.alert("Success", "Registration successful");
+    } catch (error) {
+      console.error("Registration Error:", error);
+      Alert.alert("Error", error.message || "Registration failed");
     }
-
-    const userData = {
-      firstName,
-      lastName,
-      emailId,
-      password,
-    };
-
-    const response = await fetch("http://192.168.1.39:5000/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
-
-    navigation.navigate("DrawerStack");
-
-    console.log(userData);
-    // sendData();
-    // navigation.navigate("HomeScreen");
   };
 
   const handleFirstName = (e) => {
@@ -181,6 +193,7 @@ export default function Register({ navigation }) {
             placeholder="Email Address"
             value={emailId}
             onChange={(e) => handleEmail(e)}
+            autoCapitalize="none"
           />
           {emailId.length <= 3 ? null : emailVerify ? (
             <Feather

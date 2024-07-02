@@ -14,7 +14,7 @@ const BottomTabNavigation = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
         headerShown: false,
         tabBarStyle: {
           position: "absolute",
@@ -23,7 +23,16 @@ const BottomTabNavigation = () => {
           left: 0,
           elevation: 0,
           height: 100,
-          backgroundColor: "#252355",
+          backgroundColor: "transparent",
+          borderTopWidth: 0,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          marginBottom: 10,
+          color: "#000",
+        },
+        tabBarIconStyle: {
+          marginTop: 10,
         },
       }}
     >
@@ -34,6 +43,7 @@ const BottomTabNavigation = () => {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home" color={color} size={size} />
           ),
+          tabBarLabel: "Home",
         }}
       />
       <Tab.Screen
@@ -43,6 +53,7 @@ const BottomTabNavigation = () => {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="cart" color={color} size={size} />
           ),
+          tabBarLabel: "Cart",
         }}
       />
       <Tab.Screen
@@ -52,6 +63,7 @@ const BottomTabNavigation = () => {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="heart" color={color} size={size} />
           ),
+          tabBarLabel: "Wishlist",
         }}
       />
       <Tab.Screen
@@ -65,6 +77,7 @@ const BottomTabNavigation = () => {
               size={size}
             />
           ),
+          tabBarLabel: "Orders",
         }}
       />
       <Tab.Screen
@@ -74,6 +87,7 @@ const BottomTabNavigation = () => {
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="account" color={color} size={size} />
           ),
+          tabBarLabel: "Profile",
         }}
       />
     </Tab.Navigator>

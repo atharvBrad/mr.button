@@ -81,7 +81,7 @@ export default function Login({ navigation }) {
               </View>
             </TouchableOpacity>
 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
               <View style={styles.googleButton}>
                 <Icon
                   name="google"

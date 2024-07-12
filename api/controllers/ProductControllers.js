@@ -49,4 +49,17 @@ module.exports = {
       res.status(500).json("failed to search the product");
     }
   },
+
+  getProductsByCategory: async (req, res) => {
+    const category = req.params.category;
+    console.log("Requested category:", category); // Log the requested category
+    try {
+      const products = await Product.find({ category });
+      console.log("Fetched products:", products); // Log fetched products
+      res.status(200).json(products);
+    } catch (error) {
+      console.error("Error fetching products:", error); // Log the error
+      res.status(500).json("failed to get the products");
+    }
+  },
 };

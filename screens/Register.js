@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Error from "react-native-vector-icons/MaterialIcons";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Register({ navigation }) {
   const [firstName, setFirstName] = useState("");
@@ -47,7 +48,7 @@ export default function Register({ navigation }) {
         password,
       };
 
-      const response = await fetch("http://192.168.1.42:5000/api/register", {
+      const response = await fetch("http://192.168.1.43:5000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,16 +56,29 @@ export default function Register({ navigation }) {
         body: JSON.stringify(userData),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Registration failed");
+      if (response.ok) {
+        const data = await response.json();
+        await AsyncStorage.setItem("userId", data._id.toString());
+        await AsyncStorage.setItem("token", data.token);
+        await AsyncStorage.setItem(
+          "userData",
+          JSON.stringify({ firstName: data.firstName, emailId: data.emailId })
+        );
+        navigation.navigate("DrawerStack");
+      } else {
+        alert("Registration failed.");
       }
 
-      // Registration successful, navigate to main app screen or provide feedback
-      // navigation.navigate("DrawerStack");
-      navigation.navigate("SignIn");
+      //   if (!response.ok) {
+      //     const errorData = await response.json();
+      //     throw new Error(errorData.error || "Registration failed");
+      //   }
 
-      Alert.alert("Success", "Registration successful");
+      //   // Registration successful, navigate to main app screen or provide feedback
+      //   // navigation.navigate("DrawerStack");
+      //   navigation.navigate("SignIn");
+
+      //   Alert.alert("Success", "Registration successful");
     } catch (error) {
       console.error("Registration Error:", error);
       Alert.alert("Error", error.message || "Registration failed");

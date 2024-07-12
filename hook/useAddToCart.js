@@ -19,7 +19,7 @@ export const useAddToCart = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://192.168.1.42:5000/api/cart/", {
+      const response = await fetch("http://192.168.1.43:5000/api/cart/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

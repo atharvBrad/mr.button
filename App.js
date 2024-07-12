@@ -1,5 +1,5 @@
-import "react-native-gesture-handler";
 import "react-native-reanimated";
+import "react-native-gesture-handler";
 import React from "react";
 import {
   NavigationContainer,
@@ -18,6 +18,10 @@ import DrawerContent from "./screens/DrawerContent";
 import BottomTabNavigation from "./tabScreens/BottomTabNavigation";
 import ExploreScreen1 from "./exploreScreens/ExploreScreen1";
 import ProductDetail from "./exploreScreens/ProductDetail";
+import Checkout from "./screens/Checkout";
+import Cart from "./tabScreens/Cart";
+import CategoryScreen from "./exploreScreens/CategoryScreen";
+import AddAddress from "./tabScreens/ProfileScreens/AddAddress";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -118,6 +122,87 @@ const HomeStackNavigator = () => {
           headerTransparent: true,
         }}
       />
+      <Stack.Screen
+        name="Checkout"
+        component={Checkout}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate(Cart)}>
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="CategoryScreen"
+        component={CategoryScreen}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="AddAddress"
+        component={AddAddress}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -165,6 +250,11 @@ const DrawerNavigator = () => {
         component={HomeStackNavigator}
         options={{ headerShown: false }}
       />
+      {/* <Drawer.Screen
+        name="CategoryScreen"
+        component={CategoryScreen}
+        options={{ headerShown: false }}
+      /> */}
     </Drawer.Navigator>
   );
 };

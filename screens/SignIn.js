@@ -29,7 +29,7 @@ export default function Login({ navigation }) {
       password,
     };
 
-    const response = await fetch("http://192.168.1.42:5000/api/login", {
+    const response = await fetch("http://192.168.1.43:5000/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -41,12 +41,27 @@ export default function Login({ navigation }) {
       const data = await response.json();
       await AsyncStorage.setItem("userId", data._id.toString());
       await AsyncStorage.setItem("token", data.token);
+      await AsyncStorage.setItem(
+        "userData",
+        JSON.stringify({ firstName: data.firstName, emailId: data.emailId })
+      );
       console.log("Stored userId:", data._id);
       console.log("Stored token:", data.token);
       navigation.navigate("DrawerStack");
     } else {
       alert("Invalid email or password.");
     }
+
+    // if (response.ok) {
+    //   const data = await response.json();
+    //   await AsyncStorage.setItem("userId", data._id.toString());
+    //   await AsyncStorage.setItem("token", data.token);
+    //   console.log("Stored userId:", data._id);
+    //   console.log("Stored token:", data.token);
+    //   navigation.navigate("DrawerStack");
+    // } else {
+    //   alert("Invalid email or password.");
+    // }
 
     console.log(userData);
   };

@@ -1,6 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
+export const getUserData = async () => {
+  try {
+    const userData = await AsyncStorage.getItem("userData");
+    return userData ? JSON.parse(userData) : null;
+  } catch (error) {
+    console.error("Failed to fetch userData from AsyncStorage", error);
+    return null;
+  }
+};
+
 export const getUserId = async () => {
   try {
     const userId = await AsyncStorage.getItem("userId");
@@ -29,7 +39,7 @@ export const fetchCartData = async () => {
     }
 
     const response = await axios.get(
-      `http://192.168.1.42:5000/api/cart/find/${userId}`
+      `http://192.168.1.43:5000/api/cart/find/${userId}`
     );
     return response.data;
   } catch (error) {

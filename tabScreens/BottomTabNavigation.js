@@ -13,7 +13,7 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigation = () => {
   return (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({ route }) => ({
         tabBarShowLabel: true,
         headerShown: false,
         tabBarStyle: {
@@ -23,7 +23,7 @@ const BottomTabNavigation = () => {
           left: 0,
           elevation: 0,
           height: 100,
-          backgroundColor: "transparent",
+          backgroundColor: route.name === "Home" ? "transparent" : "#fff",
           borderTopWidth: 0,
         },
         tabBarLabelStyle: {
@@ -34,7 +34,7 @@ const BottomTabNavigation = () => {
         tabBarIconStyle: {
           marginTop: 10,
         },
-      }}
+      })}
     >
       <Tab.Screen
         name="Home"

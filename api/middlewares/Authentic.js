@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/user"); // Adjust the path as necessary
+const User = require("../models/user");
 
 exports.isAuthenticated = async (req, res, next) => {
   try {
     const token = req.header("Authorization").replace("Bearer ", "");
-    const decoded = jwt.verify(token, "mrbutton2024"); // Ensure this matches your secret key
+    const decoded = jwt.verify(token, "mrbutton2024");
     const user = await User.findById(decoded.id);
 
     console.log("Token:", token);

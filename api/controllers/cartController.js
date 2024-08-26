@@ -50,7 +50,7 @@ module.exports = {
     try {
       const cart = await Cart.find({ userId }).populate(
         "products.cartItem",
-        "_id name price discountedPrice images"
+        "_id title bodyHtml price comparedAtPrice image"
       );
 
       res.status(200).json(cart);
@@ -143,34 +143,4 @@ module.exports = {
       res.status(500).json(error);
     }
   },
-
-  // decrementCartItem: async (req, res) => {
-  //   const { userId, cartItem } = req.body;
-
-  //   try {
-  //     const cart = await Cart.findOne({ userId });
-
-  //     if (!cart) {
-  //       return res.status(404).json("Cart not found");
-  //     }
-
-  //     const existingProduct = cart.products.find(
-  //       (product) => product.cartItem.toString() === cartItem
-  //     );
-
-  //     if (!existingProduct) {
-  //       return res.status(404).json("Product not found");
-  //     }
-
-  //     if (existingProduct.quantity > 1) {
-  //       existingProduct.quantity -= 1;
-  //       await cart.save();
-  //       res.status(200).json(cart);
-  //     } else {
-  //       return res.status(400).json("Quantity cannot be less than 1");
-  //     }
-  //   } catch (error) {
-  //     res.status(500).json(error);
-  //   }
-  // },
 };

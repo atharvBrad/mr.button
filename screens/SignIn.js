@@ -10,13 +10,50 @@ import {
 import Feather from "react-native-vector-icons/Feather";
 import Error from "react-native-vector-icons/MaterialIcons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ColorSpace } from "react-native-reanimated";
+import { API_URL } from "@env"; // Import the environment variable
 
 export default function Login({ navigation }) {
   const [emailId, setEmailId] = useState("");
   const [emailVerify, setEmailVerify] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState(false);
+
+  // const handleLogin = async () => {
+  //   if (!emailId || !password || !emailVerify || !passwordVerify) {
+  //     alert("Please fill all fields correctly.");
+  //     return;
+  //   }
+
+  //   const userData = {
+  //     emailId,
+  //     password,
+  //   };
+
+  //   const response = await fetch(`${API_URL}/api/login`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(userData),
+  //   });
+
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     await AsyncStorage.setItem("userId", data._id.toString());
+  //     await AsyncStorage.setItem("token", data.token);
+  //     await AsyncStorage.setItem(
+  //       "userData",
+  //       JSON.stringify({ firstName: data.firstName, emailId: data.emailId })
+  //     );
+  //     console.log("Stored userId:", data._id);
+  //     console.log("Stored token:", data.token);
+  //     navigation.navigate("DrawerStack");
+  //   } else {
+  //     alert("Invalid email or password.");
+  //   }
+
+  //   console.log(userData);
+  // };
 
   const handleLogin = async () => {
     if (!emailId || !password || !emailVerify || !passwordVerify) {
@@ -29,7 +66,7 @@ export default function Login({ navigation }) {
       password,
     };
 
-    const response = await fetch("http://192.168.1.43:5000/api/login", {
+    const response = await fetch(`${API_URL}/api/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,29 +76,27 @@ export default function Login({ navigation }) {
 
     if (response.ok) {
       const data = await response.json();
+
+      // Store the relevant data in AsyncStorage, including isAdmin
       await AsyncStorage.setItem("userId", data._id.toString());
       await AsyncStorage.setItem("token", data.token);
-      await AsyncStorage.setItem(
-        "userData",
-        JSON.stringify({ firstName: data.firstName, emailId: data.emailId })
-      );
+
+      const userDataToStore = {
+        firstName: data.firstName,
+        emailId: data.emailId,
+        isAdmin: data.isAdmin, // Store isAdmin as well
+      };
+
+      await AsyncStorage.setItem("userData", JSON.stringify(userDataToStore));
+
       console.log("Stored userId:", data._id);
       console.log("Stored token:", data.token);
+      console.log("Stored userData:", userDataToStore); // Log the stored data for debugging
+
       navigation.navigate("DrawerStack");
     } else {
       alert("Invalid email or password.");
     }
-
-    // if (response.ok) {
-    //   const data = await response.json();
-    //   await AsyncStorage.setItem("userId", data._id.toString());
-    //   await AsyncStorage.setItem("token", data.token);
-    //   console.log("Stored userId:", data._id);
-    //   console.log("Stored token:", data.token);
-    //   navigation.navigate("DrawerStack");
-    // } else {
-    //   alert("Invalid email or password.");
-    // }
 
     console.log(userData);
   };

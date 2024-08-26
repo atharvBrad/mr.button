@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@env"; // Import API_URL from .env
 
 export const useReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -10,7 +11,7 @@ export const useReviews = () => {
     setIsLoadingReviews(true);
     try {
       const response = await axios.get(
-        `http://192.168.1.43:5000/api/products/${productId}/reviews`
+        `${API_URL}/api/products/${productId}/reviews`
       );
       setReviews(response.data);
     } catch (error) {
@@ -28,7 +29,7 @@ export const useReviews = () => {
       }
 
       const response = await axios.post(
-        `http://192.168.1.43:5000/api/reviews`,
+        `${API_URL}/api/reviews`,
         {
           productId,
           rating,

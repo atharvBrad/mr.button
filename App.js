@@ -10,7 +10,6 @@ import Icon from "react-native-vector-icons/Entypo";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import SignIn from "./screens/SignIn";
@@ -22,6 +21,18 @@ import Checkout from "./screens/Checkout";
 import Cart from "./tabScreens/Cart";
 import CategoryScreen from "./exploreScreens/CategoryScreen";
 import AddAddress from "./tabScreens/ProfileScreens/AddAddress";
+import ReturnAndExchange from "./screens/ReturnAndExchange";
+import Profile from "./tabScreens/Profile";
+import PrivacyPolicy from "./tabScreens/ProfileScreens/PrivacyPolicy";
+import FAQScreen from "./PolicyScreens/Policy/FAQScreen";
+import ShippingPolicy from "./PolicyScreens/Policy/ShippingPolicy";
+import RetExPolicy from "./PolicyScreens/Policy/RetExPolicy";
+import SocialMediaPolicy from "./PolicyScreens/Policy/SocialMediaPolicy";
+import SiteUsePolicy from "./PolicyScreens/Policy/SiteUsePolicy";
+import TermsAndCondition from "./PolicyScreens/Policy/TermsAndCondition";
+import ContactUs from "./PolicyScreens/GetInTouch/ContactUs";
+import HelpCenter from "./tabScreens/ProfileScreens/HelpCenter";
+import AddProductScreen from "./tabScreens/ProfileScreens/AddProductScreen";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -147,6 +158,7 @@ const HomeStackNavigator = () => {
             </View>
           ),
           headerTitleAlign: "center",
+          headerTitle: true,
         }}
       />
       <Stack.Screen
@@ -154,7 +166,7 @@ const HomeStackNavigator = () => {
         component={CategoryScreen}
         options={{
           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
+            <TouchableOpacity onPress={() => navigation.navigate("Tabs")}>
               <Icon name="chevron-small-left" size={30} color="#000" />
             </TouchableOpacity>
           ),
@@ -181,7 +193,320 @@ const HomeStackNavigator = () => {
         component={AddAddress}
         options={{
           headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate(Profile)}>
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+          headerTitle: "Address",
+        }}
+      />
+      <Stack.Screen
+        name="PrivacyPolicy"
+        component={PrivacyPolicy}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate(Profile)}>
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+          headerTitle: true,
+        }}
+      />
+      <Stack.Screen
+        name="HelpCenter"
+        component={HelpCenter}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate(Profile)}>
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+          headerTitle: true,
+        }}
+      />
+      <Stack.Screen
+        name="AddProductScreen"
+        component={AddProductScreen}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate(Profile)}>
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+          headerTitle: true,
+        }}
+      />
+      <Stack.Screen
+        name="FAQScreen"
+        component={FAQScreen}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ReturnAndExchange)}
+            >
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="ShippingPolicy"
+        component={ShippingPolicy}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ReturnAndExchange)}
+            >
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="RetExPolicy"
+        component={RetExPolicy}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ReturnAndExchange)}
+            >
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="SocialMediaPolicy"
+        component={SocialMediaPolicy}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ReturnAndExchange)}
+            >
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="SiteUsePolicy"
+        component={SiteUsePolicy}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ReturnAndExchange)}
+            >
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="TermsAndCondition"
+        component={TermsAndCondition}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate(ReturnAndExchange)}
+            >
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="ContactUs"
+        component={ContactUs}
+        options={{
+          headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon name="chevron-small-left" size={30} color="#000" />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                backgroundColor: "transparent",
+              }}
+            >
+              <Image
+                source={require("./assets/Logo name.png")}
+                style={{ width: 100, height: 40 }}
+                resizeMode="contain"
+              />
+            </View>
+          ),
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="ReturnAndExchange"
+        component={ReturnAndExchange}
+        options={{
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.navigate("Tabs")}>
               <Icon name="chevron-small-left" size={30} color="#000" />
             </TouchableOpacity>
           ),
@@ -236,7 +561,7 @@ const DrawerNavigator = () => {
       screenOptions={{
         headerShown: false,
         drawerStyle: {
-          backgroundColor: "#252552",
+          // backgroundColor: "#e8e8e8",
         },
         drawerLabelStyle: {
           color: "#fff",

@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
+    fontFamily: "Avenir",
   },
   input: {
     height: 40,

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { getUserId } from "../utlis/asyncStorage";
+import { API_URL } from "@env"; // Import API_URL from .env
 
 export const useAddToWishlist = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -16,13 +17,10 @@ export const useAddToWishlist = () => {
         throw new Error("User not logged in");
       }
 
-      const response = await axios.post(
-        "http://192.168.1.43:5000/wishlist/add",
-        {
-          userId,
-          productId,
-        }
-      );
+      const response = await axios.post(`${API_URL}/wishlist/add`, {
+        userId,
+        productId,
+      });
       setIsLoading(false);
       return response.data;
     } catch (err) {

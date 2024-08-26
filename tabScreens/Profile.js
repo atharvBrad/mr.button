@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,8 +7,48 @@ import {
   ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import * as Font from "expo-font";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Profile = ({ navigation }) => {
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    const loadFonts = async () => {
+      await Font.loadAsync({
+        CenturyGothic: require("../assets/fonts/CenturyGothic.ttf"),
+      });
+      setFontsLoaded(true);
+    };
+
+    const checkAdminStatus = async () => {
+      try {
+        const userData = await AsyncStorage.getItem("userData");
+        if (userData) {
+          const parsedData = JSON.parse(userData);
+          console.log("Stored User Data:", parsedData); // Debug statement
+          if (parsedData.isAdmin !== undefined) {
+            console.log("Admin status:", parsedData.isAdmin); // Check if isAdmin exists
+            setIsAdmin(parsedData.isAdmin);
+          } else {
+            console.log("isAdmin key is missing in the stored user data.");
+          }
+        } else {
+          console.log("No user data found in AsyncStorage");
+        }
+      } catch (error) {
+        console.error("Error retrieving user data:", error);
+      }
+    };
+
+    loadFonts();
+    checkAdminStatus();
+  }, []);
+
+  if (!fontsLoaded) {
+    return null; // You can return a loading spinner or placeholder here
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.itemContainer}>
@@ -21,21 +61,21 @@ const Profile = ({ navigation }) => {
           <View style={styles.quickActionRow}>
             <TouchableOpacity style={styles.actionButton}>
               <Icon name="shopping-bag" size={20} color="#fff" />
-              <Text style={styles.actionbuttonText}>Orders</Text>
+              <Text style={styles.actionButtonText}>Orders</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
               <Icon name="favorite" size={20} color="#fff" />
-              <Text style={styles.actionbuttonText}>Wishlist</Text>
+              <Text style={styles.actionButtonText}>Wishlist</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.quickActionRow}>
             <TouchableOpacity style={styles.actionButton}>
               <Icon name="card-giftcard" size={20} color="#fff" />
-              <Text style={styles.actionbuttonText}>Coupons</Text>
+              <Text style={styles.actionButtonText}>Coupons</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.actionButton}>
               <Icon name="feedback" size={20} color="#fff" />
-              <Text style={styles.actionbuttonText}>Share Feedback</Text>
+              <Text style={styles.actionButtonText}>Share Feedback</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -49,7 +89,7 @@ const Profile = ({ navigation }) => {
               You haven't placed anything yet!
             </Text>
             <TouchableOpacity style={styles.shopNowButton}>
-              <Text style={styles.shopbuttonText}>Shop Now</Text>
+              <Text style={styles.shopButtonText}>Shop Now</Text>
               <Icon name="arrow-right" size={20} color="#fff" />
             </TouchableOpacity>
           </View>
@@ -67,6 +107,17 @@ const Profile = ({ navigation }) => {
             <Text style={styles.buttonText}>Edit Profile</Text>
             <Icon name="arrow-forward-ios" size={15} color="#000" />
           </TouchableOpacity>
+
+          {isAdmin && (
+            <TouchableOpacity
+              style={styles.accountButton}
+              onPress={() => navigation.navigate("AddProductScreen")}
+            >
+              <Text style={styles.buttonText}>Products Updation</Text>
+              <Icon name="arrow-forward-ios" size={15} color="#000" />
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity style={styles.accountButton}>
             <Text style={styles.buttonText}>
               Mr Button Wallet/Credits/Gifts
@@ -84,11 +135,17 @@ const Profile = ({ navigation }) => {
             <Text style={styles.buttonText}>About us</Text>
             <Icon name="arrow-forward-ios" size={15} color="#000" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.activityButton}>
+          <TouchableOpacity
+            style={styles.activityButton}
+            onPress={() => navigation.navigate("PrivacyPolicy")}
+          >
             <Text style={styles.buttonText}>Privacy Policy</Text>
             <Icon name="arrow-forward-ios" size={15} color="#000" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.activityButton}>
+          <TouchableOpacity
+            style={styles.activityButton}
+            onPress={() => navigation.navigate("HelpCenter")}
+          >
             <Text style={styles.buttonText}>Help Center</Text>
             <Icon name="arrow-forward-ios" size={15} color="#000" />
           </TouchableOpacity>
@@ -120,6 +177,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#000",
     fontSize: 16,
+    fontFamily: "CenturyGothic",
   },
   quickActions: {
     flexDirection: "column",
@@ -140,9 +198,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
   },
-  actionbuttonText: {
+  actionButtonText: {
     color: "#fff",
     marginLeft: 5,
+    fontFamily: "CenturyGothic",
   },
   ordersSection: {
     padding: 20,
@@ -161,15 +220,18 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
+    fontFamily: "CenturyGothic",
   },
   seeAllText: {
     color: "#000",
     textDecorationLine: "underline",
+    fontFamily: "CenturyGothic",
   },
   noOrdersText: {
     marginBottom: 10,
     color: "#666",
     fontSize: 15,
+    fontFamily: "CenturyGothic",
   },
   shopNowButton: {
     backgroundColor: "#252355",
@@ -179,9 +241,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
-  shopbuttonText: {
+  shopButtonText: {
     color: "#fff",
     marginRight: 5,
+    fontFamily: "CenturyGothic",
   },
   accountSection: {
     padding: 20,
@@ -202,6 +265,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     margin: 10,
+    marginBottom: 100,
   },
   activityButton: {
     borderBottomWidth: 1,
@@ -216,6 +280,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 10,
+    fontFamily: "CenturyGothic",
   },
 });
 

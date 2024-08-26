@@ -12,10 +12,14 @@
 // import axios from "axios";
 // import { useFocusEffect, useNavigation } from "@react-navigation/native";
 // import { getUserId } from "../utlis/asyncStorage";
+// import { useAddToCart } from "../hook/useAddToCart";
+// import Icon from "react-native-vector-icons/FontAwesome";
+// import { API_URL } from "@env";
 
 // const WishlistScreen = () => {
 //   const [wishlist, setWishlist] = useState([]);
 //   const [isLoading, setIsLoading] = useState(false);
+//   const { addToCart } = useAddToCart();
 //   const navigation = useNavigation();
 
 //   useFocusEffect(
@@ -33,13 +37,15 @@
 //         setIsLoading(false);
 //         return;
 //       }
-//       const response = await axios.get(
-//         `http://192.168.1.43:5000/wishlist/${userId}`
-//       );
+//       const response = await axios.get(`${API_URL}/wishlist/${userId}`);
 //       setWishlist(response.data.products);
 //     } catch (error) {
 //       console.error("Error fetching wishlist", error);
-//       Alert.alert("Error", "Failed to fetch wishlist");
+//       if (error.response && error.response.status === 404) {
+//         setWishlist([]);
+//       } else {
+//         Alert.alert("Error", "Failed to fetch wishlist");
+//       }
 //     }
 //     setIsLoading(false);
 //   };
@@ -53,7 +59,7 @@
 //         setIsLoading(false);
 //         return;
 //       }
-//       await axios.post("http://192.168.1.43:5000/wishlist/remove", {
+//       await axios.post(`${API_URL}/wishlist/remove`, {
 //         userId,
 //         productId,
 //       });
@@ -65,12 +71,19 @@
 //     setIsLoading(false);
 //   };
 
+//   const handleAddToCart = async (productId) => {
+//     const result = await addToCart(productId);
+//     if (result) {
+//       Alert.alert("Success", "Product added to cart");
+//     } else {
+//       Alert.alert("Error", "Failed to add product to cart");
+//     }
+//   };
+
 //   const renderWishlistItem = ({ item }) => (
 //     <TouchableOpacity
 //       style={styles.itemContainer}
-//       onPress={() =>
-//         navigation.navigate("ProductDetail", { productId: item._id })
-//       }
+//       onPress={() => navigation.navigate("ProductDetail", { product: item })}
 //     >
 //       <Image
 //         source={{ uri: item.image }}
@@ -81,12 +94,18 @@
 //         <Text style={styles.productName}>{item.name}</Text>
 //         <Text style={styles.productPrice}>₹{item.price}</Text>
 //         <TouchableOpacity
-//           style={styles.removeButton}
-//           onPress={() => removeFromWishlist(item._id)}
+//           style={styles.addToCartButton}
+//           onPress={() => handleAddToCart(item._id)}
 //         >
-//           <Text style={styles.buttonText}>Remove from Wishlist</Text>
+//           <Text style={styles.buttonText}>ADD TO CART</Text>
 //         </TouchableOpacity>
 //       </View>
+//       <TouchableOpacity
+//         style={styles.removeButton}
+//         onPress={() => removeFromWishlist(item._id)}
+//       >
+//         <Icon name="times" size={20} color="#fff" />
+//       </TouchableOpacity>
 //     </TouchableOpacity>
 //   );
 
@@ -105,9 +124,10 @@
 //         keyExtractor={(item) => item._id}
 //         renderItem={renderWishlistItem}
 //         ListEmptyComponent={
-//           <Text style={styles.emptyText}>Your wishlist is empty.</Text>
+//           <Text style={styles.emptyText}>Your wishlist is currently empty</Text>
 //         }
 //         contentContainerStyle={styles.listContent}
+//         numColumns={2}
 //       />
 //     </View>
 //   );
@@ -120,9 +140,8 @@
 //     padding: 10,
 //   },
 //   listContent: {
+//     marginTop: 60,
 //     paddingVertical: 20,
-//     marginTop: 70,
-//     marginHorizontal: 15,
 //   },
 //   loaderContainer: {
 //     flex: 1,
@@ -130,8 +149,9 @@
 //     alignItems: "center",
 //   },
 //   itemContainer: {
-//     flexDirection: "row",
-//     marginVertical: 10,
+//     flex: 1,
+//     flexDirection: "column",
+//     margin: 10,
 //     padding: 10,
 //     backgroundColor: "#f9f9f9",
 //     borderRadius: 5,
@@ -143,40 +163,54 @@
 //     shadowOpacity: 0.23,
 //     shadowRadius: 2.62,
 //     elevation: 4,
+//     alignItems: "center",
+//     position: "relative",
 //   },
 //   productImage: {
-//     width: 100,
-//     height: 100,
+//     width: 150,
+//     height: 150,
 //     borderRadius: 5,
 //   },
 //   productDetails: {
-//     flex: 1,
-//     marginLeft: 10,
-//     justifyContent: "center",
+//     marginTop: 10,
+//     alignItems: "center",
 //   },
 //   productName: {
-//     fontSize: 18,
+//     fontSize: 14,
 //     fontWeight: "bold",
+//     textAlign: "center",
 //   },
 //   productPrice: {
-//     fontSize: 16,
+//     fontSize: 14,
 //     color: "#888",
 //     marginVertical: 5,
 //   },
-//   removeButton: {
-//     backgroundColor: "#BF1013",
+//   addToCartButton: {
+//     backgroundColor: "#252355",
 //     padding: 10,
 //     borderRadius: 5,
 //     alignItems: "center",
+//     width: "100%",
+//     marginTop: 5,
 //   },
 //   buttonText: {
 //     color: "#fff",
 //     fontSize: 14,
 //   },
+//   removeButton: {
+//     position: "absolute",
+//     top: 10,
+//     right: 10,
+//     backgroundColor: "rgba(128, 128, 128, 0.5)",
+//     padding: 5,
+//     borderRadius: 15,
+//   },
 //   emptyText: {
 //     textAlign: "center",
-//     marginTop: 20,
-//     fontSize: 16,
+//     alignContent: "center",
+//     justifyContent: "center",
+//     marginTop: 275,
+//     fontSize: 20,
 //     color: "#888",
 //   },
 // });
@@ -198,7 +232,8 @@ import axios from "axios";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { getUserId } from "../utlis/asyncStorage";
 import { useAddToCart } from "../hook/useAddToCart";
-import Icon from "react-native-vector-icons/FontAwesome"; // Ensure you have this library installed
+import Icon from "react-native-vector-icons/FontAwesome";
+import { API_URL } from "@env";
 
 const WishlistScreen = () => {
   const [wishlist, setWishlist] = useState([]);
@@ -221,13 +256,15 @@ const WishlistScreen = () => {
         setIsLoading(false);
         return;
       }
-      const response = await axios.get(
-        `http://192.168.1.43:5000/wishlist/${userId}`
-      );
+      const response = await axios.get(`${API_URL}/wishlist/${userId}`);
       setWishlist(response.data.products);
     } catch (error) {
       console.error("Error fetching wishlist", error);
-      Alert.alert("Error", "Failed to fetch wishlist");
+      if (error.response && error.response.status === 404) {
+        setWishlist([]);
+      } else {
+        Alert.alert("Error", "Failed to fetch wishlist");
+      }
     }
     setIsLoading(false);
   };
@@ -241,7 +278,7 @@ const WishlistScreen = () => {
         setIsLoading(false);
         return;
       }
-      await axios.post("http://192.168.1.43:5000/wishlist/remove", {
+      await axios.post(`${API_URL}/wishlist/remove`, {
         userId,
         productId,
       });
@@ -267,20 +304,41 @@ const WishlistScreen = () => {
       style={styles.itemContainer}
       onPress={() => navigation.navigate("ProductDetail", { product: item })}
     >
-      <Image
-        source={{ uri: item.image }}
-        style={styles.productImage}
-        defaultSource={require("../assets/defaultImage.png")}
-      />
+      <Image source={{ uri: item.image }} style={styles.productImage} />
       <View style={styles.productDetails}>
-        <Text style={styles.productName}>{item.name}</Text>
-        <Text style={styles.productPrice}>₹{item.price}</Text>
-        <TouchableOpacity
-          style={styles.addToCartButton}
-          onPress={() => handleAddToCart(item._id)}
-        >
-          <Text style={styles.buttonText}>ADD TO CART</Text>
-        </TouchableOpacity>
+        <Text style={styles.productName}>{item.title}</Text>
+        {/* <Text style={styles.productPrice}>₹{item.price}</Text> */}
+        <Text style={styles.productPrice}>
+          ₹{item.price}{" "}
+          <Text style={styles.discountedPrice}>₹{item.compareAtPrice}</Text>
+        </Text>
+        {/* {item.metafields && (
+          <>
+            <Text style={styles.productMetafield}>
+              Collar Type: {item.metafields.collarType.join(", ")}
+            </Text>
+            <Text style={styles.productMetafield}>
+              Design: {item.metafields.design.join(", ")}
+            </Text>
+            <Text style={styles.productMetafield}>
+              Fabric: {item.metafields.fabric.join(", ")}
+            </Text>
+            <Text style={styles.productMetafield}>
+              Occasion: {item.metafields.occasion.join(", ")}
+            </Text>
+          </>
+        )}
+        {item.tags && (
+          <Text style={styles.productTags}>Tags: {item.tags.join(", ")}</Text>
+        )} */}
+        <View style={styles.addToCart}>
+          <TouchableOpacity
+            style={styles.addToCartButton}
+            onPress={() => handleAddToCart(item._id)}
+          >
+            <Text style={styles.buttonText}>ADD TO CART</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <TouchableOpacity
         style={styles.removeButton}
@@ -298,6 +356,7 @@ const WishlistScreen = () => {
       </View>
     );
   }
+  // console.log("Wishlist data:", wishlist);
 
   return (
     <View style={styles.container}>
@@ -306,7 +365,7 @@ const WishlistScreen = () => {
         keyExtractor={(item) => item._id}
         renderItem={renderWishlistItem}
         ListEmptyComponent={
-          <Text style={styles.emptyText}>Your wishlist is empty.</Text>
+          <Text style={styles.emptyText}>Your wishlist is currently empty</Text>
         }
         contentContainerStyle={styles.listContent}
         numColumns={2}
@@ -331,41 +390,56 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   itemContainer: {
-    flex: 1,
     flexDirection: "column",
     margin: 10,
-    padding: 10,
-    backgroundColor: "#f9f9f9",
-    borderRadius: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
+    padding: 5,
+    width: "100%",
+    backgroundColor: "#f0f0f0",
     alignItems: "center",
     position: "relative",
+    // Adding flex: 1 to stretch the card
+    flex: 1,
   },
   productImage: {
-    width: 150,
-    height: 150,
-    borderRadius: 5,
+    width: "100%",
+    height: 200,
+    resizeMode: "cover",
+    // Adjusting the border radius
+    // borderRadius: 5,
   },
   productDetails: {
+    flex: 1,
     marginTop: 10,
     alignItems: "center",
+    justifyContent: "space-between", // Space between details and button
   },
   productName: {
     fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
+    fontFamily: "Avenir",
   },
   productPrice: {
     fontSize: 14,
     color: "#888",
     marginVertical: 5,
+    fontFamily: "Avenir",
+  },
+  discountedPrice: {
+    textDecorationLine: "line-through",
+    color: "red",
+    fontFamily: "Avenir",
+  },
+  productMetafield: {
+    fontSize: 12,
+    color: "#666",
+    fontFamily: "Avenir",
+  },
+  productTags: {
+    fontSize: 12,
+    color: "#666",
+    marginTop: 5,
+    fontFamily: "Avenir",
   },
   addToCartButton: {
     backgroundColor: "#252355",
@@ -373,24 +447,28 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     width: "100%",
-    marginTop: 5,
+    marginTop: 10,
+    marginBottom: 5,
   },
   buttonText: {
     color: "#fff",
     fontSize: 14,
+    fontFamily: "Avenir",
   },
   removeButton: {
     position: "absolute",
-    top: 10,
-    right: 10,
+    top: 5,
+    right: 5,
     backgroundColor: "rgba(128, 128, 128, 0.5)",
     padding: 5,
-    borderRadius: 15,
+    // borderRadius: 15,
   },
   emptyText: {
     textAlign: "center",
-    marginTop: 20,
-    fontSize: 16,
+    alignContent: "center",
+    justifyContent: "center",
+    marginTop: 275,
+    fontSize: 20,
     color: "#888",
   },
 });

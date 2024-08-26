@@ -47,9 +47,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: 10,
     marginRight: 10,
+    fontFamily: "Avenir",
   },
   button: {
-    backgroundColor: "#000",
+    backgroundColor: "#252355",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
+    fontFamily: "Avenir",
   },
 });
 

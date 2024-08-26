@@ -6,6 +6,10 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "assetBundlePatterns": ["**/*"],
+    "fonts": {
+      "CenturyGothic": "./assets/fonts/CenturyGothic.ttf"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

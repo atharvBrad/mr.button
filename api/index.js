@@ -2,12 +2,15 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const dotenv = require("dotenv");
 const crypto = require("crypto");
 const CryptoJS = require("crypto-js");
 
 const jwt = require("jsonwebtoken");
 
 const User = require("./models/user");
+
+dotenv.config();
 
 const app = express();
 const port = 5000;
@@ -46,6 +49,7 @@ const userRouter = require("./routes/user");
 const wishlistRoutes = require("./routes/wishlistRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const addressRoutes = require("./routes/addressRoutes");
+const imageRoute = require("./routes/imageRoute");
 
 app.use("/api/products", productRouter);
 app.use("/api/", authRouter);
@@ -55,6 +59,7 @@ app.use("/api/cart", cartRouter);
 app.use("/wishlist", wishlistRoutes);
 app.use("/api", reviewRoutes);
 app.use("/api", addressRoutes);
+app.use("/api", imageRoute);
 
 // Health check route
 app.get("/api/health", (req, res) => {

@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import Feather from "react-native-vector-icons/Feather";
 import Error from "react-native-vector-icons/MaterialIcons";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "@env";
 
 export default function Register({ navigation }) {
   const [firstName, setFirstName] = useState("");
@@ -22,6 +23,70 @@ export default function Register({ navigation }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState(false);
+
+  // const handleRegister = async () => {
+  //   try {
+  // if (
+  //   !firstName ||
+  //   !lastName ||
+  //   !emailId ||
+  //   !password ||
+  //   !confirmPassword
+  // ) {
+  //   alert("Please fill all fields correctly.");
+  //   return;
+  // }
+
+  // if (!firstVerify || !lastVerify || !emailVerify || !passwordVerify) {
+  //   alert("Please ensure all fields are correctly formatted.");
+  //   return;
+  // }
+
+  //     const userData = {
+  //       firstName,
+  //       lastName,
+  //       emailId,
+  //       password,
+  //     };
+
+  //     const response = await fetch(`${API_URL}/api/register`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(userData),
+  //     });
+
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       console.log("Response Data:", data); // Debugging log
+
+  //        // Make sure isAdmin is in the response data
+  //     if (data.isAdmin === undefined) {
+  //       console.error("isAdmin is not present in the API response.");
+  //     }
+
+  //       await AsyncStorage.setItem("userId", data._id.toString());
+  //       await AsyncStorage.setItem("token", data.token);
+  //       await AsyncStorage.setItem(
+  //         "userData",
+  //         JSON.stringify({
+  //           firstName: data.firstName,
+  //           emailId: data.emailId,
+  //           isAdmin: data.isAdmin,
+  //         })
+  //       );
+  //       console.log("Stored User Data after Registration:", data);
+  //       navigation.navigate("DrawerStack");
+  //     } else {
+  //       alert("Registration failed.");
+  //     }
+
+  //   } catch (error) {
+  //     console.error("Registration Error:", error);
+  //     Alert.alert("Error", error.message || "Registration failed");
+  //   }
+  // };
 
   const handleRegister = async () => {
     try {
@@ -48,7 +113,7 @@ export default function Register({ navigation }) {
         password,
       };
 
-      const response = await fetch("http://192.168.1.43:5000/api/register", {
+      const response = await fetch(`${API_URL}/api/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,27 +123,30 @@ export default function Register({ navigation }) {
 
       if (response.ok) {
         const data = await response.json();
+        console.log("Response Data:", data); // Debugging log
+
+        // Make sure isAdmin is in the response data
+        if (data.isAdmin === undefined) {
+          console.error("isAdmin is not present in the API response.");
+        }
+
         await AsyncStorage.setItem("userId", data._id.toString());
         await AsyncStorage.setItem("token", data.token);
-        await AsyncStorage.setItem(
-          "userData",
-          JSON.stringify({ firstName: data.firstName, emailId: data.emailId })
-        );
+
+        // Ensure isAdmin is included here
+        const userDataToStore = {
+          firstName: data.firstName,
+          emailId: data.emailId,
+          isAdmin: data.isAdmin,
+        };
+
+        console.log("UserData to Store in AsyncStorage:", userDataToStore);
+
+        await AsyncStorage.setItem("userData", JSON.stringify(userDataToStore));
         navigation.navigate("DrawerStack");
       } else {
         alert("Registration failed.");
       }
-
-      //   if (!response.ok) {
-      //     const errorData = await response.json();
-      //     throw new Error(errorData.error || "Registration failed");
-      //   }
-
-      //   // Registration successful, navigate to main app screen or provide feedback
-      //   // navigation.navigate("DrawerStack");
-      //   navigation.navigate("SignIn");
-
-      //   Alert.alert("Success", "Registration successful");
     } catch (error) {
       console.error("Registration Error:", error);
       Alert.alert("Error", error.message || "Registration failed");
